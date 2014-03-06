@@ -10,6 +10,11 @@ all: firefox chrome
 
 firefox:
 	$(TITLE) 'Building firefox'
+	$(Q)mkdir -p build/firefox
+	$(Q)cp -r src/firefox/* build/firefox
+	$(Q)cp src/walkhub/logo.png build/firefox/data
+	$(Q)cp src/chrome/popup.* build/firefox/data
+	$(Q)curl "http://code.jquery.com/jquery-1.11.0.min.js" > build/firefox/data/jquery.js
 
 chrome:
 	$(TITLE) Building chrome
