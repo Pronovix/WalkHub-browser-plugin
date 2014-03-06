@@ -2,7 +2,7 @@
   "use strict";
   $(document).ready(function () {
     // Load checkbox state.
-    chrome.storage.sync.get('client-js-enabled', function(items) {
+    chrome.storage.sync.get('client-js-enabled', function (items) {
       $('#client-js-enabled').prop('checked', items['client-js-enabled']);
     });
 
