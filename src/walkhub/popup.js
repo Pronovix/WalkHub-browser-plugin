@@ -1,8 +1,6 @@
-(function ($) {
-  "use strict";
-
-  var settingCallback = function(setting, callback) {
-    if (chrome) {
+var settingCallback = function (setting, callback) {
+    "use strict";
+    if (typeof chrome !== "undefined") {
       chrome.storage.sync.get(setting, function (items) {
         callback(items[setting]);
       });
@@ -12,16 +10,22 @@
     }
   },
 
-    saveSetting = function(key, value) {
-      if (chrome) {
-        chrome.storage.sync.set({key: value});
-      } else {
-        var storage = require("sdk/simple-storage");
+  saveSetting = function (k, value) {
+    "use strict";
+    if (typeof chrome !== "undefined") {
+      var data = {};
+      data[k] = value;
+      chrome.storage.sync.set(data);
+    } else {
+      var storage = require("sdk/simple-storage");
 
-        storage[key] = value;
-      }
-    };
+      storage[key] = value;
+    }
+  };
 
+
+(function ($) {
+  "use strict";
   $(document).ready(function () {
     // Load checkbox state.
     settingCallback('client-js-enabled', function (setting) {
