@@ -5,8 +5,11 @@ var settingCallback = function (setting, callback) {
         callback(items[setting]);
       });
     } else {
+      /*
       var storage = require("sdk/simple-storage");
       callback(storage[setting]);
+      */
+      messageAddon('getSetting', setting);
     }
   },
 
@@ -21,7 +24,16 @@ var settingCallback = function (setting, callback) {
 
       storage[key] = value;
     }
-  };
+  },
+
+  /**
+   * Send message to firefox addon.
+   */
+  messageAddon(eventName, data) {
+    var event = document.createEvent(eventName);
+    event.initCustomEvent(eventName, data);
+    document.documentElement.dispatchEvent(eventName);
+  }
 
 
 (function ($) {

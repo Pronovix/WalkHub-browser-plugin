@@ -24,6 +24,7 @@ chrome: download_jquery
 	$(Q)mkdir -p build/chrome
 	$(Q)cp src/chrome/manifest.json build/chrome
 	$(Q)cp src/chrome/walkhub_loader.js build/chrome
+	$(Q)cp src/chrome/popup.js build/chrome
 	$(Q)cp src/walkhub/popup.* build/chrome
 	$(Q)cp src/walkhub/player/player.js build/chrome
 	$(Q)cp src/walkhub/logo.png build/chrome
