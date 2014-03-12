@@ -1,1 +1,3 @@
 build/*
+.jquery.cached
+walkhub_browser_plugin.iml

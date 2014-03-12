@@ -15,8 +15,6 @@ firefox: download_jquery
 	$(Q)mkdir -p build/firefox
 	$(Q)cp -r src/firefox/* build/firefox
 	$(Q)cp src/walkhub/logo.png build/firefox/data
-	$(Q)cp src/walkhub/popup.* build/firefox/data
-	$(Q)cp ${JQUERY_CACHE} build/firefox/data/jquery.js
 	$(Q)cp src/chrome/walkhub_loader.js build/firefox/data
 
 chrome: download_jquery
