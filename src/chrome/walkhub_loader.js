@@ -1,20 +1,32 @@
 (function () {
   'use strict';
 
+  var walkhub_origin = 'http://walkhub.net';
+
+  function attach_to_document(element) {
+    (document.head || document.documentElement).appendChild(element);
+  }
+
   /**
    * Load walkhub resources.
-   *
-   * @todo load css
    */
   function load_walkhub_resources() {
-    var script = document.createElement('script');
+    var compiled_js = document.createElement('script');
+    compiled_js.src = walkhub_origin + '/resources/compiled.js';
 
-    script.src = 'http://walkhub.net/resources/compiled.js';
-    script.onload = function () {
-      this.parentNode.removeChild(this);
-    };
+    attach_to_document(compiled_js);
 
-    (document.head || document.documentElement).appendChild(script);
+    var walkhub_origin_js = document.createElement('script');
+    var origin_json = document.createTextNode('window.Walkhub = window.Walkhub || {}; window.Walkhub.ProxyOrigin = function () { return "' + walkhub_origin + '"; };');
+    walkhub_origin_js.appendChild(origin_json);
+
+    attach_to_document(walkhub_origin_js);
+
+    var stylesheet = document.createElement('link');
+    stylesheet.href = walkhub_origin + '/resources/joyride.css';
+    stylesheet.rel = 'stylesheet';
+
+    attach_to_document(stylesheet);
   }
 
   // Chrome has a checkbox to load javascript.
