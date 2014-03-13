@@ -24,7 +24,6 @@ chrome: download_jquery
 	$(Q)cp src/chrome/walkhub_loader.js build/chrome
 	$(Q)cp src/chrome/popup.js build/chrome
 	$(Q)cp src/walkhub/popup.* build/chrome
-	$(Q)cp src/walkhub/player/player.js build/chrome
 	$(Q)cp src/walkhub/logo.png build/chrome
 	$(Q)cp ${JQUERY_CACHE} build/chrome/jquery.js
 
