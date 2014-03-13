@@ -34,4 +34,4 @@ clean:
 	$(Q)rm ${JQUERY_CACHE}
 
 download_jquery:
-	$(Q)curl -s "http://code.jquery.com/jquery-1.11.0.min.js" > ${JQUERY_CACHE}
+	$(Q)test -s ${JQUERY_CACHE} || curl -s "http://code.jquery.com/jquery-1.11.0.min.js" > ${JQUERY_CACHE}
