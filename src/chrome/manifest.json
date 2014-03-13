@@ -17,7 +17,8 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["walkhub_loader.js"]
+      "js": ["walkhub_loader.js"],
+      "all_frames": true
     }
   ],
   "permissions": [
