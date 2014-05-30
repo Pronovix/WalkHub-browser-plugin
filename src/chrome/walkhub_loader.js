@@ -26,7 +26,7 @@
     attach_to_document(walkhub_origin_js);
 
     var stylesheet = document.createElement('link');
-    stylesheet.href = walkhub_origin + '/resources/joyride.css';
+    stylesheet.href = walkhub_origin + '/resources/walkthrough.css';
     stylesheet.rel = 'stylesheet';
     attach_to_document(stylesheet);
   }
