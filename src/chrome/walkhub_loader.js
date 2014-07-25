@@ -21,7 +21,7 @@
     attach_to_document(compiled_js);
 
     var walkhub_origin_js = document.createElement('script');
-    var origin_json = document.createTextNode('window.Walkhub = window.Walkhub || {}; Walkhub.Origin = function () { return "' + walkhub_origin +'";}');
+    var origin_json = document.createTextNode('window.Walkhub = window.Walkhub || {}; Walkhub.ExtensionOrigin = function () { return "' + walkhub_origin +'";}');
     walkhub_origin_js.appendChild(origin_json);
     attach_to_document(walkhub_origin_js);
 
