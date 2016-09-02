@@ -1,44 +1,47 @@
 (function () {
-  'use strict';
+	"use strict";
 
-  var walkhub_origin = 'http://walkhub.net';
+	function attach_to_document(element) {
+		(document.head || document.documentElement).appendChild(element);
+	}
 
-  function attach_to_document(element) {
-    (document.head || document.documentElement).appendChild(element);
-  }
+	// Load walkhub resources.
+	function load_walkhub_resources() {
+		var compiled_js = document.createElement("script");
+		compiled_js.src = "https://walkhub.net/assets/client.js";
+		compiled_js.defer = true;
+		attach_to_document(compiled_js);
 
-  /**
-   * Load walkhub resources.
-   */
-  function load_walkhub_resources() {
-    // Do not load javascript in the parent iframe.
-    if (window.location.pathname === '/walkhub') {
-      return;
-    }
+		var existence_js = document.createElement("script");
+		existence_js.textContent = "window.WALKHUB_EXTENSION = true;";
+		attach_to_document(existence_js);
+	}
 
-    var compiled_js = document.createElement('script');
-    compiled_js.src = walkhub_origin + '/resources/compiled.js';
-    attach_to_document(compiled_js);
+	function listen() {
+		window.addEventListener("message", function(event) {
+			var data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+			if (data.walkhub_extension_key && data.walkhub_extension_key === chrome.runtime.id) {
+				console.log(event);
+				chrome.runtime.sendMessage(data, function(dataUrl) {
+					window.postMessage(JSON.stringify({
+						img: dataUrl,
+						screenshot_key: data.screenshot_key,
+						command: "saveScreenshot",
+					}), data.origin || "*");
+				})
+			}
+		});
+	}
 
-    var walkhub_origin_js = document.createElement('script');
-    var origin_json = document.createTextNode('window.Walkhub = window.Walkhub || {}; Walkhub.ExtensionOrigin = function () { return "' + walkhub_origin +'";}');
-    walkhub_origin_js.appendChild(origin_json);
-    attach_to_document(walkhub_origin_js);
-
-    var stylesheet = document.createElement('link');
-    stylesheet.href = walkhub_origin + '/resources/walkthrough.css';
-    stylesheet.rel = 'stylesheet';
-    attach_to_document(stylesheet);
-  }
-
-  // Chrome has a checkbox to load javascript.
-  if (typeof chrome !== 'undefined') {
-    chrome.storage.sync.get('client-js-enabled', function (items) {
-      if (items['client-js-enabled']) {
-        load_walkhub_resources();
-      }
-    });
-  } else {
-    load_walkhub_resources();
-  }
+	// Chrome has a checkbox to load javascript.
+	if (typeof chrome !== "undefined") {
+		chrome.storage.sync.get("client-js-enabled", function (items) {
+			if (items["client-js-enabled"]) {
+				load_walkhub_resources();
+				listen();
+			}
+		});
+	} else {
+		load_walkhub_resources();
+	}
 }());
