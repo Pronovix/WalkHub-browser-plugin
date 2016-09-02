@@ -21,7 +21,6 @@
 		window.addEventListener("message", function(event) {
 			var data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
 			if (data.walkhub_extension_key && data.walkhub_extension_key === chrome.runtime.id) {
-				console.log(event);
 				chrome.runtime.sendMessage(data, function(dataUrl) {
 					window.postMessage(JSON.stringify({
 						img: dataUrl,
