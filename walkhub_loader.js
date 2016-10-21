@@ -8,7 +8,7 @@
 	// Load walkhub resources.
 	function load_walkhub_resources() {
 		var compiled_js = document.createElement("script");
-		compiled_js.src = "https://walkhub.net/assets/client.js";
+		compiled_js.src = window.getWalkhub() + "/assets/client.js";
 		compiled_js.defer = true;
 		attach_to_document(compiled_js);
 
