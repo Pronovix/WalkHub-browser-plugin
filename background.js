@@ -27,8 +27,6 @@ function addWalkhubCSP(headerValue) {
 		headerValue = headerValue.replace(overrides[i], overrides[i]+" "+wh);
 	}
 
-	console.log(headerValue);
-
 	return headerValue;
 }
 
@@ -49,7 +47,7 @@ var prevCookieValue = null;
 chrome.cookies.onChanged.addListener(function (changeInfo) {
 	var walkhubCookieDomain = window.getWalkhubDomain();
 	if (changeInfo.cookie.domain === walkhubCookieDomain || changeInfo.cookie.domain === "."+walkhubCookieDomain) {
-		if (changeInfo.cookie.name === "WALKHUB_SESSION") {
+		if (changeInfo.cookie.name.endsWith("_SESSION")) {
 			if (prevCookieValue === null) {
 				prevCookieValue = changeInfo.cookie.value;
 			}
