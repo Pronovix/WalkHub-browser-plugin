@@ -10,6 +10,40 @@ chrome.runtime.onMessage.addListener(function (data, sender, sendResponse) {
 	return false;
 });
 
+function addWalkhubCSP(headerValue) {
+	var wh = window.getWalkhub();
+	var overrides = [
+		"default-src",
+		"script-src",
+		"style-src",
+		"img-src",
+		"connect-src",
+		"font-src",
+		"media-src",
+		"child-src",
+	];
+
+	for (var i = 0; i < overrides.length; i++) {
+		headerValue = headerValue.replace(overrides[i], overrides[i]+" "+wh);
+	}
+
+	console.log(headerValue);
+
+	return headerValue;
+}
+
+chrome.webRequest.onHeadersReceived.addListener(function (details) {
+	console.log(details);
+	var headers = details.responseHeaders;
+	for (var i = 0; i < headers.length; i++) {
+		if (headers[i].name === "Content-Security-Policy") {
+			headers[i].value = addWalkhubCSP(headers[i].value);
+		}
+	}
+
+	return {responseHeaders: headers};
+}, {urls: ["<all_urls>"], types: ["main_frame"]}, ["blocking", "responseHeaders"]);
+
 var prevCookieValue = null;
 
 chrome.cookies.onChanged.addListener(function (changeInfo) {

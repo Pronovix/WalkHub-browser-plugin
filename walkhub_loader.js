@@ -32,15 +32,6 @@
 		});
 	}
 
-	// Chrome has a checkbox to load javascript.
-	if (typeof chrome !== "undefined") {
-		chrome.storage.sync.get("client-js-enabled", function (items) {
-			if (items["client-js-enabled"]) {
-				load_walkhub_resources();
-				listen();
-			}
-		});
-	} else {
-		load_walkhub_resources();
-	}
+	load_walkhub_resources();
+	listen();
 }());

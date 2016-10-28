@@ -30,6 +30,8 @@
 		"*://*/*",
 		"storage",
 		"background",
+		"webRequest",
+		"webRequestBlocking",
 		"<all_urls>"
 	],
 	"content_security_policy": "script-src 'self' blob: filesystem: chrome-extension-resource: https://walkhub.net; object-src 'self'"
