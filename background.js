@@ -42,22 +42,60 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
 	return {responseHeaders: headers};
 }, {urls: ["<all_urls>"], types: ["main_frame"]}, ["blocking", "responseHeaders"]);
 
-var prevCookieValue = null;
+function decodeByte(b) {
+	var str = "";
+	for (var i = 0; i < b.length; i++) {
+		str += String.fromCharCode(parseInt(b[i], 16));
+	}
+	return str;
+}
+
+function getUIDFromCookie(cookie) {
+	// cut the signature, because there is no need to verify the signature
+	var encodedPairs = cookie.substr(64+2);
+	var bytes = encodedPairs.match(/.{1,2}/g);
+	var chunks = [[]];
+
+	bytes.forEach(function(b) {
+		if (b === "00") {
+			chunks.push([]);
+		} else {
+			chunks[chunks.length-1].push(b);
+		}
+	});
+
+	var data = {};
+
+	for (var i = 0; i < (chunks.length/2); i++) {
+		var key = decodeByte(chunks[i*2]);
+		var value = decodeByte(chunks[i*2+1]);
+
+		data[key] = value;
+	}
+
+	return data.uid || false;
+}
+
+
+
+var prevUID = null;
 
 chrome.cookies.onChanged.addListener(function (changeInfo) {
 	var walkhubCookieDomain = window.getWalkhubDomain();
 	if (changeInfo.cookie.domain === walkhubCookieDomain || changeInfo.cookie.domain === "."+walkhubCookieDomain) {
 		if (changeInfo.cookie.name.endsWith("_SESSION")) {
-			if (prevCookieValue === null) {
-				prevCookieValue = changeInfo.cookie.value;
+			if (prevUID === null) {
+				prevUID = getUIDFromCookie(changeInfo.cookie.value);
 			}
 
-			if (prevCookieValue !== changeInfo.cookie.value) {
+			var currentUID = getUIDFromCookie(changeInfo.cookie.value);
+
+			if (prevUID !== currentUID) {
 				window.location.reload();
 			}
 		}
 	}
-})
+});
 
 function messageFrame(message) {
 	document.getElementsByTagName("iframe")[0].contentWindow.postMessage(JSON.stringify(message), "*");
