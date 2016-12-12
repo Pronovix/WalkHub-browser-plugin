@@ -3,7 +3,7 @@
 
 	"name": "WalkHub",
 	"description": "Allows you to play Walkthroughs on any page.",
-	"version": "1.0",
+	"version": "2.0",
 	"homepage_url": "https://walkhub.net",
 	"browser_action": {
 		"default_icon": "logo-128x128.png",
